@@ -1,0 +1,66 @@
+{
+  "routes": [
+    {
+      "routeInfo": {
+        "path": "/server-tap/spring",
+        "backends": ["http://192.168.1.8:4570/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/casino",
+        "backends": ["http://192.168.1.8:4568/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/shigen",
+        "backends": ["http://192.168.1.5:4567/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/man10",
+        "backends": ["http://192.168.1.3:4567/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/shima",
+        "backends": ["http://192.168.1.8:4567/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/test",
+        "backends": ["https://httpbin.org/anything/v1"]
+      }
+    },
+    {
+      "routeInfo": {
+        "path": "/server-tap/casino-test",
+        "backends": ["http://127.0.0.1:4568/v1"]
+      }
+    }
+  ],
+  "default": {
+    "routeInfo": {
+      "path": null,
+      "backends": [],
+      "removePrefix": true
+    },
+    "account": {
+      "allowedGroups": [
+        "Admin"
+      ],
+      "publicMetaKey": [
+        "group"
+      ]
+    },
+    "cache": {
+      "interval": 0,
+      "userCached": false,
+      "globalCached": false
+    }
+  }
+}
