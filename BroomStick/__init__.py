@@ -86,8 +86,8 @@ class BroomStick:
         backend = route.route_info_function.clean_path(backend, remove_path_params=False)
 
         headers = dict(request.headers)
-        del headers["host"]
-        del headers["connection"]
+        if "host" in headers: del headers["host"]
+        if "connection" in headers: del headers["connection"]
 
         cookies = dict(request.cookies)
 
