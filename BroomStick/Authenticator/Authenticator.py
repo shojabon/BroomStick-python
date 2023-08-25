@@ -77,6 +77,11 @@ class Authenticator:
             "password": hashedPassword,
             "metadata": metadata
         }
+        # if user already exists, update only the password
+        if self.main.mongo["BroomStick"]["users"].find_one({"userId": user_id}):
+            user = {
+                "password": hashedPassword
+            }
         self.main.mongo["BroomStick"]["users"].update_one({"userId": user_id}, {"$set": user}, upsert=True)
 
     def authenticate(self, username, password):
