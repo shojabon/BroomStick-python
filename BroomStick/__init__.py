@@ -31,8 +31,20 @@ class BroomStick:
 
         self.register_routes()
 
+        dynamic_settings = {}
+        if self.config["ssl"]["key"] != "" and self.config["ssl"]["cert"] != "":
+            dynamic_settings = {
+                "ssl_keyfile": self.config["ssl"]["key"],
+                "ssl_certfile": self.config["ssl"]["cert"]
+            }
+
         # start server
-        uvicorn.run(self.app, port=self.config["listeningPort"], host="0.0.0.0")
+        uvicorn.run(
+            self.app,
+            port=self.config["listeningPort"],
+            host="0.0.0.0",
+            **dynamic_settings
+        )
 
     def load_routes(self):
         for route in glob.glob("routes/*.json"):
@@ -102,7 +114,7 @@ class BroomStick:
             result = function.handle_request(request, headers, cookies, json_object)
             if result is not CommonAPIResponse.Success:
                 return result
-            
+
         params = {}
         if json_object is not None:
             params["json"] = json_object
@@ -111,22 +123,21 @@ class BroomStick:
 
         params["headers"] = headers
         params["cookies"] = cookies
-        
 
         if method == "GET":
             req = requests.get(backend, **params)
         elif method == "POST":
-            req = requests.post(backend,**params)
+            req = requests.post(backend, **params)
         elif method == "PUT":
-            req = requests.put(backend,**params)
+            req = requests.put(backend, **params)
         elif method == "DELETE":
-            req = requests.delete(backend,**params)
+            req = requests.delete(backend, **params)
         elif method == "PATCH":
-            req = requests.patch(backend,**params)
+            req = requests.patch(backend, **params)
         elif method == "HEAD":
-            req = requests.head(backend,**params)
+            req = requests.head(backend, **params)
         elif method == "OPTIONS":
-            req = requests.options(backend,**params)
+            req = requests.options(backend, **params)
         else:
             return None
 
@@ -136,7 +147,8 @@ class BroomStick:
         if "Content-Encoding" in req_headers:
             del req_headers["Content-Encoding"]
 
-        res = Response(content=req.text, status_code=req.status_code, headers=req_headers, media_type=req.headers.get("Content-Type"))
+        res = Response(content=req.text, status_code=req.status_code, headers=req_headers,
+                       media_type=req.headers.get("Content-Type"))
         for function in route.functions:
             function.after_handle_request(request, res)
         return res
