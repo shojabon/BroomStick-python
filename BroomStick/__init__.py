@@ -167,7 +167,7 @@ class BroomStick:
         @self.app.head("/{full_path:path}")
         @self.app.options("/{full_path:path}")
         async def get(request: Request, full_path: str, response: Response):
-            print("got request for", full_path)
+            # print request domain
             res = await self.process_request(request, request.method)
             if isinstance(res, APIResponse):
                 response.status_code = res.code

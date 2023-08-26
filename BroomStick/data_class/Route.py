@@ -9,6 +9,7 @@ from fastapi import FastAPI, Request
 
 from BroomStick.data_class.Functions.AccountFunction import AccountFunction
 from BroomStick.data_class.Functions.CacheFunction import CacheFunction
+from BroomStick.data_class.Functions.HostNameFunction import HostNameFunction
 from BroomStick.data_class.Functions.RouteInfoFunction import RouteInfoFunction
 
 if TYPE_CHECKING:
@@ -26,6 +27,7 @@ class Route:
         self.route_info_function: RouteInfoFunction = self.register_function(RouteInfoFunction())
         self.account_function: AccountFunction = self.register_function(AccountFunction())
         self.cache_function: CacheFunction = self.register_function(CacheFunction())
+        self.hostname_function: RouteInfoFunction = self.register_function(HostNameFunction())
 
     def register_function(self, func: RouteFunction):
         func.route = self

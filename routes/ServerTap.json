@@ -15,11 +15,15 @@
     {
       "routeInfo": {
         "path": "/testbin",
-        "backends": ["http://localhost"]
+        "backends": ["http://localhost/anything/aaaaa"]
       }
     }
   ],
   "default": {
+    "hostname": {
+      "allowedHosts": [
+      ]
+    },
     "routeInfo": {
       "path": null,
       "backends": [],
