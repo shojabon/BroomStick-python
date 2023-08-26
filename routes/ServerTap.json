@@ -15,7 +15,7 @@
     {
       "routeInfo": {
         "path": "/testbin",
-        "backends": ["http://localhost/anything/aaaaa"]
+        "backends": ["http://localhost/anything/local"]
       }
     }
   ],

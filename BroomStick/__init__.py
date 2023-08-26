@@ -43,6 +43,7 @@ class BroomStick:
             self.app,
             port=self.config["listeningPort"],
             host="0.0.0.0",
+
             **dynamic_settings
         )
 
@@ -71,13 +72,18 @@ class BroomStick:
         self.routes.sort(key=lambda x: len(x.route_info_function.get_path()), reverse=True)
 
     async def process_request(self, request: Request, method: str):
-        route = None
+
+        # only search for routes that have the correct hostname
+        available_routes_for_hostname = []
         for route in self.routes:
+            if route.hostname_function.is_allowed_to_use(request) == CommonAPIResponse.Success:
+                available_routes_for_hostname.append(route)
+
+        route = None
+        for route in available_routes_for_hostname:
             route: Route = route
             if route.route_info_function.matches_path(request.url.path):
                 break
-            else:
-                route = None
         if route is None:
             return CommonAPIResponse.RouteNotFound
 
