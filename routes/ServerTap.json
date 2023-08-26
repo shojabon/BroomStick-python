@@ -2,26 +2,15 @@
   "routes": [
     {
       "routeInfo": {
-        "path": "/server-tap/man10",
-        "backends": ["http://192.168.1.12:4567/v1"]
-      }
-    },
-    {
-      "routeInfo": {
         "path": "/v2",
         "backends": ["http://127.0.0.1:5000/v2"]
-      }
-    },
-    {
-      "routeInfo": {
-        "path": "/testbin",
-        "backends": ["http://localhost/anything/local"]
       }
     }
   ],
   "default": {
     "hostname": {
       "allowedHosts": [
+        "pdocker.fragment-cloud.com"
       ]
     },
     "routeInfo": {

@@ -84,6 +84,8 @@ class BroomStick:
             route: Route = route
             if route.route_info_function.matches_path(request.url.path):
                 break
+            else:
+                route = None
         if route is None:
             return CommonAPIResponse.RouteNotFound
 
