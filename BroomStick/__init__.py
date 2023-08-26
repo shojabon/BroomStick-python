@@ -5,7 +5,7 @@ import uvicorn
 import re
 
 import requests
-from fastapi import FastAPI, Request, Response, status
+from fastapi import FastAPI, Request, Response, status, UploadFile
 from pymongo import MongoClient
 
 from BroomStick.Authenticator.Authenticator import Authenticator
@@ -102,12 +102,17 @@ class BroomStick:
             pattern = route.route_info_function.get_path_pattern()
             path = re.sub(pattern, "", path)
 
-        backend = random.choice(route.route_info_function.get_backends()) + path
-        backend = route.route_info_function.clean_path(backend, remove_path_params=False)
+        query = ""
+        if len(request.url.query) > 0:
+            query = "?" + request.url.query
+
+        backend = random.choice(route.route_info_function.get_backends()) + path + query
+        # backend = route.route_info_function.clean_path(backend, remove_path_params=False)
+        # print(backend)
 
         headers = dict(request.headers)
-        if "host" in headers: del headers["host"]
-        if "connection" in headers: del headers["connection"]
+        # if "host" in headers: del headers["host"]
+        # if "connection" in headers: del headers["connection"]
 
         cookies = dict(request.cookies)
 
@@ -128,6 +133,7 @@ class BroomStick:
             params["json"] = json_object
         else:
             params["data"] = await request.body()
+
 
         params["headers"] = headers
         params["cookies"] = cookies

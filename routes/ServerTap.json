@@ -3,14 +3,13 @@
     {
       "routeInfo": {
         "path": "/v2",
-        "backends": ["http://127.0.0.1:5000/v2"]
+        "backends": ["https://httpbin.org"]
       }
     }
   ],
   "default": {
     "hostname": {
       "allowedHosts": [
-        "pdocker.fragment-cloud.com"
       ]
     },
     "routeInfo": {
