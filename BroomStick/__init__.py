@@ -19,7 +19,7 @@ class BroomStick:
     def __init__(self):
         self.app = FastAPI()
         self.config = {}
-        file = open("config.json")
+        file = open("config/config.json")
         self.config = json.loads(file.read())
         file.close()
 
