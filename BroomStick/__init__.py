@@ -147,10 +147,15 @@ class BroomStick:
         if "Content-Encoding" in req_headers:
             del req_headers["Content-Encoding"]
 
-        res = Response(content=req.text, status_code=req.status_code, headers=req_headers,
-                       media_type=req.headers.get("Content-Type"))
+        res = Response(
+            content=req.content,
+            status_code=req.status_code,
+            headers=req_headers,
+            media_type=req.headers.get("Content-Type")
+        )
         for function in route.functions:
             function.after_handle_request(request, res)
+
         return res
 
     def register_routes(self):
@@ -162,6 +167,7 @@ class BroomStick:
         @self.app.head("/{full_path:path}")
         @self.app.options("/{full_path:path}")
         async def get(request: Request, full_path: str, response: Response):
+            print("got request for", full_path)
             res = await self.process_request(request, request.method)
             if isinstance(res, APIResponse):
                 response.status_code = res.code
