@@ -30,11 +30,14 @@ class AccountFunction(RouteFunction):
             return CommonAPIResponse.UnAuthorized
         user = self.route.main.authenticator.get_user(authorization_token=request.headers.get("Authorization"))
         if user is None:
+            print("Auth failed {No user}")
             return CommonAPIResponse.UnAuthorized
         user_group = user.metadata.get("group")
         if user_group is None:
+            print("Auth failed {No group}")
             return CommonAPIResponse.UnAuthorized
         if user_group not in self.get_config().get("allowedGroups"):
+            print("Auth failed {Not allowed group}")
             return CommonAPIResponse.UnAuthorized
         return CommonAPIResponse.Success
 
