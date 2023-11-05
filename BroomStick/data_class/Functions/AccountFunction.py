@@ -26,9 +26,9 @@ class AccountFunction(RouteFunction):
     def is_allowed_to_use(self, request: Request):
         if len(self.get_allowed_groups()) == 0:
             return CommonAPIResponse.Success
-        if request.headers.get("authenticate") is None:
+        if request.headers.get("Authorization") is None:
             return CommonAPIResponse.UnAuthorized
-        user = self.route.main.authenticator.get_user(request.headers.get("authenticate"))
+        user = self.route.main.authenticator.get_user(authorization_token=request.headers.get("Authorization"))
         if user is None:
             return CommonAPIResponse.UnAuthorized
         user_group = user.metadata.get("group")
@@ -39,12 +39,12 @@ class AccountFunction(RouteFunction):
         return CommonAPIResponse.Success
 
     def handle_request(self, request: Request, headers: dict, cookies: dict, json: dict):
-        user_object = self.route.main.authenticator.get_user(request.headers.get("authenticate"))
+        user_object = self.route.main.authenticator.get_user(authorization_token=request.headers.get("Authorization"))
         if user_object is None:
             if len(self.get_allowed_groups()) == 0:
                 return CommonAPIResponse.Success
             return CommonAPIResponse.UnAuthorized
-        del headers["authenticate"]
+        del headers["authorization"]
         headers["x-User-Id"] = user_object.user_id
         headers["x-User-Name"] = user_object.username
         for metadata in self.get_public_meta_key():

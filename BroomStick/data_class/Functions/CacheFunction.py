@@ -38,7 +38,7 @@ class CacheFunction(RouteFunction):
 
         current_time = datetime.now().timestamp()
 
-        user_object = self.route.main.authenticator.get_user(request.headers.get("Authenticate"))
+        user_object = self.route.main.authenticator.get_user(authorization_token=request.headers.get("Authorization"))
         if self.user_cached() and user_object is not None:
             user_id = user_object.user_id
             if user_id in self.cached_responses_by_user:
@@ -58,7 +58,7 @@ class CacheFunction(RouteFunction):
             return CommonAPIResponse.Success
 
         current_time = datetime.now().timestamp()
-        user_object = self.route.main.authenticator.get_user(request.headers.get("Authenticate"))
+        user_object = self.route.main.authenticator.get_user(authorization_token=request.headers.get("Authorization"))
         if self.user_cached() and user_object is not None:
             user_id = user_object.user_id
             self.last_response_time_by_user[user_id] = current_time

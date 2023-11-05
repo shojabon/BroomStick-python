@@ -19,6 +19,7 @@
     },
     "account": {
       "allowedGroups": [
+        "Admin"
       ],
       "publicMetaKey": [
         "group"
