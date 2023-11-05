@@ -71,16 +71,16 @@ class Authenticator:
     def create_user(self, user_id, username, password, metadata=None):
         # Hash the password using SHA256
         hashedPassword = self.hash_password(password)
-
+        if metadata is None:
+            metadata = {}
+            metadata.update(self.main.config["authenticator"]["defaultMetadata"])
         # Create a new document with the user data
         user = {
             "userId": user_id,
             "username": username,
             "password": hashedPassword,
+            "metadata": metadata
         }
-        if metadata is not None:
-            metadata.update(self.main.config["authenticator"]["defaultMetadata"])
-            user["metadata"] = metadata
         # if user already exists, update only the password
         if self.main.mongo["BroomStick"]["users"].find_one({"userId": user_id}):
             user = {
