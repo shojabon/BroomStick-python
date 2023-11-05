@@ -137,7 +137,7 @@ class Authenticator:
                 return self.cached_users[user_id]
             user = self.main.mongo["BroomStick"]["users"].find_one({"userId": user_id})
             if user is not None:
-                user = AuthenticatedUser(user_id, user["username"], user["metadata"])
+                user = AuthenticatedUser(user_id, user["username"], user.get("metadata", {}))
                 self.cached_users[user_id] = user
                 return user
             return None

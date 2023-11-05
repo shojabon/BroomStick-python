@@ -2,8 +2,8 @@
   "routes": [
     {
       "routeInfo": {
-        "path": "/v2",
-        "backends": ["https://httpbin.org"]
+        "path": "/mshop/shop/list",
+        "backends": ["http://httpbin.org/anything"]
       }
     }
   ],
@@ -19,6 +19,7 @@
     },
     "account": {
       "allowedGroups": [
+        "User",
         "Admin"
       ],
       "publicMetaKey": [
