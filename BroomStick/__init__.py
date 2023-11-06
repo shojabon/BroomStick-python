@@ -7,6 +7,7 @@ import re
 import requests
 from fastapi import FastAPI, Request, Response, status, UploadFile
 from pymongo import MongoClient
+from starlette.middleware.cors import CORSMiddleware
 
 from BroomStick.Authenticator.Authenticator import Authenticator
 from BroomStick.data_class.APIResponse import CommonAPIResponse, APIResponse
@@ -22,6 +23,14 @@ class BroomStick:
         file = open("config/config.json")
         self.config = json.loads(file.read())
         file.close()
+
+        self.app.add_middleware(
+            CORSMiddleware,
+            allow_origins=self.config["cors"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"],
+        )
 
         self.mongo = MongoClient(self.config["mongodb"])
         self.authenticator = Authenticator(self)
