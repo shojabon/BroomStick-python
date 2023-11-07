@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import datetime
 import hashlib
 import traceback
@@ -129,7 +130,7 @@ class Authenticator:
                 return self.get_user(api_key=authorization_token)
             if scheme.lower() == "basic":
                 authorization_token = authorization_token.encode("utf-8")
-                authorization_token = authorization_token.decode("base64")
+                authorization_token = base64.b64decode(authorization_token).decode("utf-8")
                 authorization_token = authorization_token.partition(":")[0]
                 return self.get_user(api_key=authorization_token)
             return self.get_user(token=authorization_token)
