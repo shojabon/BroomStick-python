@@ -125,13 +125,14 @@ class Authenticator:
     def get_user(self, token: str = None, api_key: str = None, user_id: str = None, authorization_token: str = None) -> Optional[AuthenticatedUser]:
         if authorization_token is not None:
             scheme, _, authorization_token = authorization_token.partition(" ")
-            if scheme.lower() != "bearer":
-                return None
-
-            if len(authorization_token) == 36:
+            if scheme.lower() == "bearer":
                 return self.get_user(api_key=authorization_token)
-            else:
-                return self.get_user(token=authorization_token)
+            if scheme.lower() == "basic":
+                authorization_token = authorization_token.encode("utf-8")
+                authorization_token = authorization_token.decode("base64")
+                authorization_token = authorization_token.partition(":")[0]
+                return self.get_user(api_key=authorization_token)
+            return self.get_user(token=authorization_token)
         if user_id is not None:
             if user_id in self.cached_users:
                 return self.cached_users[user_id]
